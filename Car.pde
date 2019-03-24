@@ -9,8 +9,8 @@ class Car {
   Wheel leftWheel= new Wheel();
   Wheel rightWheel= new Wheel();
   int wheelradius=13;
-  LEDSensor ledSensorRight= new LEDSensor();
-  LEDSensor ledSensorLeft= new LEDSensor();
+  LEDSensor ledSensorRight;
+  LEDSensor ledSensorLeft;
   int sensorValueRight=0;
   int sensorValueLeft=0;
   
@@ -21,6 +21,8 @@ class Car {
 
 
   Car(int x, int y, float theta) {
+    ledSensorRight= new LEDSensor(13, -14);
+    ledSensorLeft= new LEDSensor(-13, -14);
     position=new PVector(x, y);
     angle = theta;
   }
@@ -35,12 +37,9 @@ class Car {
   void LEDSense(){
     // step one is to determine where the sensors are.
     // angle here is from the up...
-    int rightsensorx=(int)(position.x+13*cos(angle)+14*sin(angle));
-    int rightsensory=(int)(position.y+13*sin(angle)-14*cos(angle));
-    int leftsensorx=(int)(position.x-13*cos(angle)+14*sin(angle));
-    int leftsensory=(int)(position.y-13*sin(angle)-14*cos(angle));
-    sensorValueRight=ledSensorRight.sense(rightsensorx, rightsensory);
-    sensorValueLeft=ledSensorLeft.sense(leftsensorx, leftsensory);
+    
+    sensorValueRight=ledSensorRight.sense((int) position.x,(int) position.y, angle);
+    sensorValueLeft=ledSensorLeft.sense((int) position.x, (int) position.y, angle);
     //fill(0,0,255);
     //ellipse(rightsensorx+5, rightsensory+5, 10,10);
     //print(leftsensorx);
