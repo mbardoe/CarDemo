@@ -14,12 +14,6 @@ class Car {
   int sensorValueRight=0;
   int sensorValueLeft=0;
   
-
-
-
-
-
-
   Car(int x, int y, float theta) {
     ledSensorRight= new LEDSensor(13, -14);
     ledSensorLeft= new LEDSensor(-13, -14);
@@ -49,6 +43,8 @@ class Car {
 
   void show() {
     fill(255);
+    //We need to sense before we draw the sensor to see what is there.
+    LEDSense();
     push();
       rectMode(CENTER);
       ellipseMode(CENTER);
@@ -60,12 +56,6 @@ class Car {
       rect(-13, 5, 6, 10);
       //left motor
       rect(13, 5, 6, 10);
-      //We need to sense before we draw the sensor to see what is there. 
-      pop();
-      LEDSense();
-      push();
-      translate(position.x, position.y);
-      rotate(angle);
       //right Sensor
       if (sensorValueRight>128) {
         fill(255, 0, 0);
@@ -90,30 +80,21 @@ class Car {
     // calculate angle change.
     float deltaAngle;
     float leftspeed=leftWheel.giveSpeed()/15.0;
-    //println(leftspeed);
     float rightspeed=rightWheel.giveSpeed()/15.0;
     if (leftspeed==rightspeed) {
       PVector delta=PVector.fromAngle(angle-HALF_PI);
       PVector showDelta = PVector.fromAngle(angle-HALF_PI);
       showDelta.mult(30);
       delta.mult(leftspeed);
-        //fill(255,0,0);
-        //strokeWeight(5);
-        //line(position.x, position.y,position.x+40*showDelta.x, position.y+40*showDelta.y);
-        //strokeWeight(1);
       position.add(delta);
     }
     
     else{
       deltaAngle=(leftspeed-rightspeed)/wheelradius;
       // calculate new position
-
       int turnradius=(int)(rightspeed/deltaAngle);
       PVector centerRotation= new PVector (int(position.x+(13+turnradius)*sin(HALF_PI-angle)), 
         (int)(position.y+(13+turnradius)*cos(HALF_PI-angle)));
-      //fill(255);
-      //ellipse(centerRotation.x, centerRotation.y, 5, 5);
-      //PVector turnArm=position.sub(centerRotation);
       PVector turnArm= new PVector(position.x-centerRotation.x, position.y-centerRotation.y);
       turnArm.rotate(deltaAngle);
       position=centerRotation.add(turnArm);

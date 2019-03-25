@@ -1,5 +1,5 @@
 class LEDSensor {
-
+  
   PVector noiseVec = PVector.random2D(); // for the noise
   PVector noiseChange=PVector.random2D();
   int MAX_SPEED=180;
@@ -44,4 +44,5 @@ class LEDSensor {
     return constrain(value, 0, 255);    
     
   }
+
 }
