@@ -67,7 +67,7 @@ taken when noSense is equal to 0.
 In general you should use this template for your drive 
 
 ```
-class MyDrive extends Drive{
+class MyDrive extends DriveSystem{
   
   MyDrive(Car mCar) {
     super(mCar);
