@@ -4,7 +4,8 @@ DriveSystem drive;
 void setup(){
   size(800,600);
   myCar=new Car(100, 40, PI/2+.1);
-  drive=new LineFollowerMKB(myCar);
+  //drive=new LineFollowerMKB(myCar);
+  drive=new DriveSystem(myCar);
 }
 
 void draw(){
