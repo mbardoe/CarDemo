@@ -32,7 +32,8 @@ class LEDSensor extends Sensor{
     loadPixels();
     for (int i=sensorx-2; i<sensorx+3; i++) {
       for (int j=sensory-2; j<sensory+3; j++) {
-        place=j*width+i;
+        //place=j*width+i;
+        place=pixelIndex(i,j);
         if (place>0 && place<pixels.length){
           value+=red(pixels[j*width+i]);
         }
@@ -44,5 +45,7 @@ class LEDSensor extends Sensor{
     return constrain(value, 0, 255);    
     
   }
+  
+  
 
 }
