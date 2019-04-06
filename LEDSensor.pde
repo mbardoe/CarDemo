@@ -1,4 +1,4 @@
-class LEDSensor {
+class LEDSensor extends Sensor{
   
   PVector noiseVec = PVector.random2D(); // for the noise
   PVector noiseChange=PVector.random2D();

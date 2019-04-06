@@ -29,16 +29,8 @@ class Car {
   }
   
   void LEDSense(){
-    // step one is to determine where the sensors are.
-    // angle here is from the up...
-    
     sensorValueRight=ledSensorRight.sense((int) position.x,(int) position.y, angle);
     sensorValueLeft=ledSensorLeft.sense((int) position.x, (int) position.y, angle);
-    //fill(0,0,255);
-    //ellipse(rightsensorx+5, rightsensory+5, 10,10);
-    //print(leftsensorx);
-    //print("   ");
-    //println(leftsensory);
   }
 
   void show() {
