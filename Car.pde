@@ -11,12 +11,15 @@ class Car {
   int wheelradius=13;
   LEDSensor ledSensorRight;
   LEDSensor ledSensorLeft;
+  UltraSonicSensor ultrasonic;
   int sensorValueRight=0;
   int sensorValueLeft=0;
+  int ultrasonicSense=0;
   
   Car(int x, int y, float theta) {
     ledSensorRight= new LEDSensor(13, -14);
     ledSensorLeft= new LEDSensor(-13, -14);
+    ultrasonic=new UltraSonicSensor(0,-14,0);
     position=new PVector(x, y);
     angle = theta;
   }
@@ -28,23 +31,23 @@ class Car {
     rightWheel.setSpeed(s);
   }
   
-  void LEDSense(){
-    // step one is to determine where the sensors are.
-    // angle here is from the up...
-    
+  void ledSense(){
     sensorValueRight=ledSensorRight.sense((int) position.x,(int) position.y, angle);
     sensorValueLeft=ledSensorLeft.sense((int) position.x, (int) position.y, angle);
-    //fill(0,0,255);
-    //ellipse(rightsensorx+5, rightsensory+5, 10,10);
-    //print(leftsensorx);
-    //print("   ");
-    //println(leftsensory);
   }
-
+  
+  void ultrasonicSense(){
+    ultrasonicSense=ultrasonic.sense((int)(position.x), (int)(position.y), angle);
+  }
+  
+  void sense(){
+    ledSense();
+    ultrasonicSense();
+  }
   void show() {
     fill(255);
     //We need to sense before we draw the sensor to see what is there.
-    LEDSense();
+    sense();
     push();
       rectMode(CENTER);
       ellipseMode(CENTER);

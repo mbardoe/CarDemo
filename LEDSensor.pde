@@ -1,4 +1,4 @@
-class LEDSensor {
+class LEDSensor extends Sensor{
   
   PVector noiseVec = PVector.random2D(); // for the noise
   PVector noiseChange=PVector.random2D();
@@ -32,9 +32,10 @@ class LEDSensor {
     loadPixels();
     for (int i=sensorx-2; i<sensorx+3; i++) {
       for (int j=sensory-2; j<sensory+3; j++) {
-        place=j*width+i;
+        //place=j*width+i;
+        place=pixelIndex(i,j);
         if (place>0 && place<pixels.length){
-          value+=red(pixels[j*width+i]);
+          value+=red(pixels[pixelIndex(i,j)]);
         }
       }
     }
@@ -44,5 +45,7 @@ class LEDSensor {
     return constrain(value, 0, 255);    
     
   }
+  
+  
 
 }
