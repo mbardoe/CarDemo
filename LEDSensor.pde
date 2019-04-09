@@ -35,7 +35,7 @@ class LEDSensor extends Sensor{
         //place=j*width+i;
         place=pixelIndex(i,j);
         if (place>0 && place<pixels.length){
-          value+=red(pixels[j*width+i]);
+          value+=red(pixels[pixelIndex(i,j)]);
         }
       }
     }

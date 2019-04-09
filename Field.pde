@@ -9,9 +9,9 @@ class Field {
     myheight=_y;
   }
 
-  void addBox(Box b) {
-    things.push(b);
-  }
+  //void addBox(Box b) {
+  //  things.push(b);
+  //}
 
   void show() {
     background(0);
