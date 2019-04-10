@@ -7,6 +7,7 @@ class UltraSonicSensor extends Sensor {
   float angle;
   float circumStep=.05;
   float sensitivity=130;
+  int centerX, centerY;
 
 
   UltraSonicSensor(int _x, int _y, float _angle) {
@@ -16,14 +17,13 @@ class UltraSonicSensor extends Sensor {
   }
 
   int sense(int x, int y, float carAngle) {
-    int centerX, centerY;
     // Send out 
     //loadPixels();
     //calculate the spot we are looking at.
     centerX=(int)(x+offsetx*cos(carAngle)-offsety*sin(carAngle));
     centerY=(int)(y+offsetx*sin(carAngle)+offsety*cos(carAngle));
     // You can see where the sensor is sensing by uncommenting.
-    //show(centerX,centerY, carAngle);
+    show( carAngle);
     int analyzeX, analyzeY, index;
     float value;
     // Now determine how which 
@@ -43,7 +43,7 @@ class UltraSonicSensor extends Sensor {
     return maxDistance;
   }
 
-  void show(int centerX, int centerY, float carAngle) {
+  void show (float carAngle) {
     ellipseMode(CENTER);
     fill(255, 125);
     arc(centerX, centerY, 2*maxDistance, 2*maxDistance, carAngle-.5-HALF_PI, carAngle+.5-HALF_PI, PIE);

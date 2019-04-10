@@ -12,16 +12,18 @@ class Car {
   LEDSensor ledSensorRight;
   LEDSensor ledSensorLeft;
   UltraSonicSensor ultrasonic;
+  Map map;
   int sensorValueRight=0;
   int sensorValueLeft=0;
   int ultrasonicSense=0;
-  
+
   Car(int x, int y, float theta) {
     ledSensorRight= new LEDSensor(13, -14);
     ledSensorLeft= new LEDSensor(-13, -14);
-    ultrasonic=new UltraSonicSensor(0,-14,0);
+    ultrasonic=new UltraSonicSensor(0, -14, 0);
     position=new PVector(x, y);
     angle = theta;
+    map=new Map(width/2, 0, width/2, height);
   }
   void setLeftSpeed(int s) {
     leftWheel.setSpeed(s);
@@ -30,56 +32,59 @@ class Car {
   void setRightSpeed(int s) {
     rightWheel.setSpeed(s);
   }
-  
-  void ledSense(){
-    sensorValueRight=ledSensorRight.sense((int) position.x,(int) position.y, angle);
+
+  void ledSense() {
+    sensorValueRight=ledSensorRight.sense((int) position.x, (int) position.y, angle);
     sensorValueLeft=ledSensorLeft.sense((int) position.x, (int) position.y, angle);
   }
-  
-  void ultrasonicSense(){
+
+  void ultrasonicSense() {
     ultrasonicSense=ultrasonic.sense((int)(position.x), (int)(position.y), angle);
+    map.update(ultrasonic.centerY, ultrasonic.centerY, angle+ultrasonic.angle, ultrasonicSense);
   }
-  
-  void sense(){
+
+  void sense() {
     ledSense();
     ultrasonicSense();
   }
   void show() {
+    //println(angle);
     fill(255);
     //We need to sense before we draw the sensor to see what is there.
     sense();
     push();
-      rectMode(CENTER);
-      ellipseMode(CENTER);
-      translate(position.x, position.y);
-      rotate(angle);
-      // main frame
-      rect(0, 0, 20, 20);
-      //right motor
-      rect(-13, 5, 6, 10);
-      //left motor
-      rect(13, 5, 6, 10);
-      //right Sensor
-      if (sensorValueRight>128) {
-        fill(255, 0, 0);
-      } else
-      {
-        fill(255);
-      }
-      ellipse(13, -14, 8, 8);
-      //left Sensor
-      if (sensorValueLeft>128) {
-        fill(255, 0, 0);
-      } else
-      {
-        fill(255);
-      }
-      ellipse(-13, -14, 8, 8);
+    rectMode(CENTER);
+    ellipseMode(CENTER);
+    translate(position.x, position.y);
+    rotate(angle);
+    // main frame
+    rect(0, 0, 20, 20);
+    //right motor
+    rect(-13, 5, 6, 10);
+    //left motor
+    rect(13, 5, 6, 10);
+    //right Sensor
+    if (sensorValueRight>128) {
+      fill(255, 0, 0);
+    } else
+    {
+      fill(255);
+    }
+    ellipse(13, -14, 8, 8);
+    //left Sensor
+    if (sensorValueLeft>128) {
+      fill(255, 0, 0);
+    } else
+    {
+      fill(255);
+    }
+    ellipse(-13, -14, 8, 8);
     pop();
+    map.show();
   }
 
   void move() {
-    
+
     // calculate angle change.
     float deltaAngle;
     float leftspeed=leftWheel.giveSpeed()/15.0;
@@ -90,9 +95,7 @@ class Car {
       showDelta.mult(30);
       delta.mult(leftspeed);
       position.add(delta);
-    }
-    
-    else{
+    } else {
       deltaAngle=(leftspeed-rightspeed)/wheelradius;
       // calculate new position
       int turnradius=(int)(rightspeed/deltaAngle);
