@@ -3,6 +3,8 @@ class Map {
   int myWidth, myHeight;
   int gridsize=20;
   int offx, offy;
+  float hitProb=.7;
+  float missProb=.9;
 
   Map(int offsetx, int offsety, int areawidth, int areaheight) {
     offx=offsetx;
@@ -77,15 +79,19 @@ class Map {
     float oldnotthere=myMap[i][j][0];
     float oldthere=myMap[i][j][1];
     if (value==0) {
-
-      newdenom=.1*oldthere+.9*oldnotthere;
-      myMap[i][j][0]=oldnotthere*.9/newdenom;
-      myMap[i][j][1]=oldthere*.1/newdenom;
+      fill(125, 125,0);
+      ellipse((i)*gridsize +width/2, (j)*gridsize, gridsize,gridsize);
+      fill(255);
+      newdenom=(1-missProb)*oldthere+missProb*oldnotthere;
+      myMap[i][j][0]=oldnotthere*missProb/newdenom;
+      myMap[i][j][1]=oldthere*(1-missProb)/newdenom;
     } else if (value==1) {
-
-      newdenom=.9*oldthere+.1*oldnotthere;
-      myMap[i][j][0]=oldnotthere*.1/newdenom;
-      myMap[i][j][1]=oldthere*.9/newdenom;
+      fill(0, 125,125);
+      ellipse((i+.5)*gridsize +width/2, (j+.5)*gridsize, gridsize,gridsize);
+      fill(255);
+      newdenom=hitProb*oldthere+(1-hitProb)*oldnotthere;
+      myMap[i][j][0]=oldnotthere*(1-hitProb)/newdenom;
+      myMap[i][j][1]=oldthere*hitProb/newdenom;
     }
   }
 }
