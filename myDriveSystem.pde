@@ -10,7 +10,7 @@ class MyDriveSystem extends DriveSystem {
         myCar.setLeftSpeed(30);
         myCar.setRightSpeed(30);
         approach=1;
-        setNoSense(40);
+        setNoSense(80);
       } else if (approach==1) {
         myCar.setLeftSpeed(5);
         myCar.setRightSpeed(-5);

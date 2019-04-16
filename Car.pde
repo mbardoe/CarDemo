@@ -40,7 +40,7 @@ class Car {
 
   void ultrasonicSense() {
     ultrasonicSense=ultrasonic.sense((int)(position.x), (int)(position.y), angle);
-    map.update(ultrasonic.centerY, ultrasonic.centerY, angle+ultrasonic.angle, ultrasonicSense);
+    map.update(ultrasonic.centerX, ultrasonic.centerY, angle+ultrasonic.angle, ultrasonicSense);
   }
 
   void sense() {

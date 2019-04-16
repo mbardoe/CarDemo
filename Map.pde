@@ -1,7 +1,7 @@
 class Map {
   float[][][] myMap;
   int myWidth, myHeight;
-  int gridsize=5;
+  int gridsize=20;
   int offx, offy;
 
   Map(int offsetx, int offsety, int areawidth, int areaheight) {
@@ -27,12 +27,28 @@ class Map {
   }
 
   void update(int centerx, int centery, float angle, int distance) {
-    PVector sensorHeading = PVector.fromAngle(HALF_PI-angle);
+    PVector sensorHeading = PVector.fromAngle(angle -HALF_PI); // try to determine which way the sensor is headed.
+    fill(255);
+    line(centerx, centery, 30*sensorHeading.x+centerx, 30*sensorHeading.y+centery);
     PVector currentHeading;
-    float anglebetween, currdistance, newdenom, oldnotthere, oldthere;
+    float anglebetween, currdistance;
     int currentx, currenty;
-    for (int i=0; i<myWidth; i++) {
-      for (int j=0; j<myHeight; j++) {
+    for (int i=max((int)((centerx-150)/gridsize), 0); i<min((int)((centerx+150)/gridsize), myWidth); i++) {
+      for (int j=max((int)((centery-150)/gridsize), 0); j<min((int)((centery+150)/gridsize), myHeight); j++) {
+        //print("angle:");
+        //println(angle);
+        //print("Centery:");
+        //println(centery);
+        //print("i:");
+        //println(i);
+        //print("j:");
+        //println(j);
+        //print("min i:");
+        //println(max((int)((centerx-150)/gridsize), 0));
+        //print("max i:");
+        //println(min((int)((centerx+150)/gridsize), (int)(myWidth/gridsize)));
+
+
         currentx=(int)(i*(gridsize+.5)-centerx);
         currenty=(int)(j*(gridsize+.5)-centery);
         currentHeading=new PVector(currentx, currenty);
@@ -40,31 +56,36 @@ class Map {
         if ((anglebetween>-.5)&&(anglebetween<.5)) {
           currdistance=currentHeading.mag();
           if (currdistance<.95*distance) {
-
-            oldnotthere=myMap[i][j][0];
-            oldthere=myMap[i][j][1];
-            newdenom=.1*oldthere+.9*oldnotthere;
-            myMap[i][j][0]=oldnotthere*.9/newdenom;
-            myMap[i][j][1]=oldthere*.1/newdenom;
+            updateMap(i, j, 0);
           } else if ((currdistance>.95*distance)&&(currdistance<1.05*distance)) {
             if (distance==150) {
               //nothing there
-              oldnotthere=myMap[i][j][0];
-              oldthere=myMap[i][j][1];
-              newdenom=.1*oldthere+.9*oldnotthere;
-              myMap[i][j][0]=oldnotthere*.9/newdenom;
-              myMap[i][j][1]=oldthere*.1/newdenom;
+              //println("max distance nothing there");
+              updateMap(i, j, 0);
             } else {
               //might be something there
-              oldnotthere=myMap[i][j][0];
-              oldthere=myMap[i][j][1];
-              newdenom=.9*oldthere+.1*oldnotthere;
-              myMap[i][j][0]=oldnotthere*.1/newdenom;
-              myMap[i][j][1]=oldthere*.9/newdenom;
+              updateMap(i, j, 1);
             }
           }
         }
       }
+    }
+  }
+
+  void updateMap(int i, int j, int value) {
+    float newdenom;
+    float oldnotthere=myMap[i][j][0];
+    float oldthere=myMap[i][j][1];
+    if (value==0) {
+
+      newdenom=.1*oldthere+.9*oldnotthere;
+      myMap[i][j][0]=oldnotthere*.9/newdenom;
+      myMap[i][j][1]=oldthere*.1/newdenom;
+    } else if (value==1) {
+
+      newdenom=.9*oldthere+.1*oldnotthere;
+      myMap[i][j][0]=oldnotthere*.1/newdenom;
+      myMap[i][j][1]=oldthere*.9/newdenom;
     }
   }
 }
