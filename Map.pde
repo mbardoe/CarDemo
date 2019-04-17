@@ -1,7 +1,7 @@
 class Map {
   float[][][] myMap;
   int myWidth, myHeight;
-  int gridsize=20;
+  int gridsize=7;
   int offx, offy;
   float hitProb=.7;
   float missProb=.9;
@@ -87,7 +87,7 @@ class Map {
       myMap[i][j][1]=oldthere*(1-missProb)/newdenom;
     } else if (value==1) {
       fill(0, 125,125);
-      ellipse((i+.5)*gridsize +width/2, (j+.5)*gridsize, gridsize,gridsize);
+      ellipse((i)*gridsize +width/2, (j)*gridsize, gridsize,gridsize);
       fill(255);
       newdenom=hitProb*oldthere+(1-hitProb)*oldnotthere;
       myMap[i][j][0]=oldnotthere*(1-hitProb)/newdenom;
